@@ -1,0 +1,12 @@
+// "hello world"
+wf := import("@platforma-sdk/workflow-tengo:workflow")
+
+wf.body(func(args) {
+	return {
+		outputs: {
+			message: "Hello, " + args.name + "!"
+		},
+
+		exports: {}
+	}
+})
