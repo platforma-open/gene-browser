@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@platforma-open/milaboratories.gene-browser.model": "workspace:*",
+    "@milaboratories/graph-maker": "catalog:",
     "@platforma-sdk/ui-vue": "catalog:",
     "vue": "catalog:"
   },

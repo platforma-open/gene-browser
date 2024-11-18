@@ -21,15 +21,15 @@
       "ui": "@platforma-open/milaboratories.gene-browser.ui/dist"
     },
     "meta": {
-      "title": "Block Title",
+      "title": "Gene browser",
       "logo": "file:logos/block-logo.png",
       "url": "https://github.com/milaboratory/platforma-gene-browser",
       "docs": "https://github.com/milaboratory/platforma-gene-browser/docs",
       "support": "mailto:support@milaboratories.com",
-      "description": "Simple Hello World block that can be used as a boilerplate for newly created blocks.",
+      "description": "Visualize and explore gene expression values.",
       "longDescription": "file:./docs/description.md",
       "changelog": "file:CHANGELOG.md",
-      "tags": ["tutorial"],
+      "tags": ["rna-seq"],
       "organization": {
         "name": "MiLaboratories Inc",
         "url": "https://milaboratories.com/",

@@ -10,7 +10,8 @@
     "build": "tsup && vite build && block-tools build-model"
   },
   "dependencies": {
-    "@platforma-sdk/model": "catalog:"
+    "@platforma-sdk/model": "catalog:",
+    "@milaboratories/graph-maker": "catalog:"
   },
   "devDependencies": {
     "@platforma-sdk/block-tools": "catalog:",
