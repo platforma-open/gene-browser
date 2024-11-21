@@ -1,16 +1,38 @@
-<script setup lang="ts">
-import { 
+<script
+  setup
+  lang="ts"
+>
+import {
   PlDataTableSettings,
-  PlBlockPage, 
-  PlBtnPrimary,
+  PlBlockPage,
+  PlBtnGhost,
+  PlMaskIcon24,
   PlSlideModal,
   PlDropdownRef,
-  PlAgDataTable, 
+  PlAgDataTable,
 } from '@platforma-sdk/ui-vue';
+import { GraphMakerSettings } from '@milaboratories/graph-maker';
 import { computed, ref } from 'vue';
 import { useApp } from '../app';
 
 const app = useApp();
+
+if (app.ui === undefined) {
+  app.model.ui = {
+    tableState: {
+      gridState: {},
+      pTableParams: {
+        sorting: [],
+        filters: []
+      }
+    },
+    graphState: {
+      title: "Gene expression",
+      chartType: "discrete",
+      template: "box"
+    } satisfies GraphMakerSettings
+  }
+};
 
 const tableSettings = computed<PlDataTableSettings>(() => ({
   sourceType: "ptable",
@@ -25,10 +47,15 @@ const showSettings = () => { settingsAreShown.value = true }
 </script>
 
 <template>
- <PlBlockPage>
+  <PlBlockPage>
     <template #title>Gene Browser</template>
     <template #append>
-      <PlBtnPrimary :icon="'settings-2'" @click.stop="showSettings">Settings</PlBtnPrimary>
+      <PlBtnGhost @click.stop="showSettings">
+        Settings
+        <template #append>
+          <PlMaskIcon24 name="settings" />
+        </template>
+      </PlBtnGhost>
     </template>
 
     <PlSlideModal v-model="settingsAreShown">

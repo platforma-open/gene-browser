@@ -13,16 +13,18 @@ import {
 
 export type UiState = {
   tableState?: PlDataTableState;
-  graphState: GraphMakerSettings;
+  graphState?: GraphMakerSettings;
 };
 
 export type BlockArgs = {
   countsRef?: Ref;
 };
 
-export const model = BlockModel.create<BlockArgs, UiState>()
+export const model = BlockModel.create()
 
-  .initialArgs({})
+  .withArgs<BlockArgs>({})
+
+  .withUiState<UiState>({})
 
   .output('countsOptions', (ctx) =>
     ctx.resultPool.getOptions((spec) => isPColumnSpec(spec) && spec.name === 'countMatrix')

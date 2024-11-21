@@ -6,8 +6,8 @@ import GraphPage from "./pages/GraphPage.vue";
 export const sdkPlugin = defineApp(model, () => {
   return {
     routes: {
-      "/": MainPage,
-      "/graph": GraphPage,
+      "/": () => MainPage,
+      "/graph": () => GraphPage,
     },
   };
 });
