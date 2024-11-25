@@ -6,20 +6,12 @@ import { useApp } from "../app";
 const app = useApp();
 
 const settings = {
-  chartType: 'scatterplot',
-  template: 'dots',
-  title: '',
-  defaultOptions: [{
-    inputName: 'y',
-    selectedSource: {
-      kind: 'PColumn',
-      name: 'countMatrix',
-      valueType: 'Int'
-    }
-  }]
+  chartType: 'discrete',
+  template: 'box',
+  title: 'Gene expression',
    } as GraphMakerSettings;
 </script>
 
 <template>
-    <graph-maker :pFrame="app.model.outputs.pf" v-model="settings" />
+    <graph-maker :pFrame="app.model.outputs.normPf" v-model="settings" />
 </template>

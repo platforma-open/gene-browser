@@ -48,11 +48,13 @@ export const model = BlockModel.create()
   .output('ColumnId', (ctx) => {
     const pCols = ctx.outputs?.resolve('normPf')?.getPColumns();
     if (pCols?.length !== 1) {
-      throw Error('expected single column');
+      return undefined;
     }
 
     return pCols[0].id;
   })
+
+  .output('newoutput', (ctx) => ctx.outputs?.resolve('normPf')?.listInputFields())
 
   .output('normPf', (ctx): PFrameHandle | undefined => {
     const pCols = ctx.outputs?.resolve('normPf')?.getPColumns();

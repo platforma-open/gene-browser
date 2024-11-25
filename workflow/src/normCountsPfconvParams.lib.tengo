@@ -14,6 +14,21 @@ getColumns := func(blockId, inputSpec) {
       ],
     "columns": [
       {
+        "column": "SYMBOL",
+        "id": "genesymbol",
+        "allowNA": true,
+        "spec": {
+          "name": "pl7.app/rna-seq/genesymbol",
+          "valueType": "String",
+          "domain": {
+            "pl7.app/blockId": blockId
+          },
+          "annotations": {
+            "pl7.app/label": "Gene symbol"
+          }
+        }
+      },
+            {
         "column": "NormCounts",
         "id": "normcounts",
         "allowNA": false,
@@ -30,7 +45,7 @@ getColumns := func(blockId, inputSpec) {
       }
       ],
     "storageFormat": "Binary",
-    "partitionKeyLength": 0
+    "partitionKeyLength": 1
   }
 }
 
