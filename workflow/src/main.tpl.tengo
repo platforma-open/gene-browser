@@ -28,8 +28,8 @@ wf.body(func(args) {
 	
 	rawCounts := args.resolvedInput
 	inputSpec := rawCounts.spec
-	//species := inputSpec.axisSpec[1].domain["pl7.app/species"]
-
+	species := inputSpec.domain["pl7.app/species"]
+	
 	// convert PColumn to csv
 
 	csvCounts := xsv.exportFrame([rawCounts], "csv", {})
@@ -37,7 +37,7 @@ wf.body(func(args) {
 	countNorm := exec.builder().
 		cmd("Rscript").
 		arg("/Users/aiturbide/Blocks/gene-browser/scripts/normalize_counts.R").
-		arg("rawCounts.csv").arg(".").arg("saccharomyces-cerevisiae").//arg(species).
+		arg("rawCounts.csv").arg(".").arg(species).
 		addFile("rawCounts.csv", csvCounts).
 		saveFile("normalized_counts.csv").
 		//saveFile("lognormalized_counts.csv").
