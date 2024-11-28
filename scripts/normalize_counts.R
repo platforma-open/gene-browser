@@ -22,7 +22,8 @@ load_annotation_package <- function(species) {
     "caenorhabditis-elegans" = "org.Ce.eg.db",
     "gallus-gallus" = "org.Gg.eg.db",
     "bos-taurus" = "org.Bt.eg.db",
-    "sus-scrofa" = "org.Ss.eg.db"
+    "sus-scrofa" = "org.Ss.eg.db",
+    "test-species" = "org.Mm.eg.db"
   )
   
   # Check if the species name is valid
