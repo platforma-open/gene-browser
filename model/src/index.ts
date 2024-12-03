@@ -1,30 +1,42 @@
-import { GraphMakerSettings } from '@milaboratories/graph-maker';
-import { 
-  BlockModel, 
+import { GraphMakerState } from '@milaboratories/graph-maker';
+import {
+  BlockModel,
+  createPlDataTable,
   InferOutputsType,
   isPColumn,
-  createPlDataTable,
-  PlDataTableState,
-  Ref,
-  ValueType,
   isPColumnSpec,
-  PFrameHandle
+  PFrameHandle,
+  PlDataTableState,
+  PlRef,
+  ValueType
 } from '@platforma-sdk/model';
 
 export type UiState = {
-  tableState?: PlDataTableState;
-  graphState?: GraphMakerSettings;
+  tableState: PlDataTableState;
+  graphState: GraphMakerState;
 };
 
 export type BlockArgs = {
-  countsRef?: Ref;
+  countsRef?: PlRef;
 };
 
 export const model = BlockModel.create()
 
   .withArgs<BlockArgs>({})
 
-  .withUiState<UiState>({})
+  .withUiState<UiState>({
+    tableState: {
+      gridState: {},
+      pTableParams: {
+        sorting: [],
+        filters: []
+      }
+    },
+    graphState: {
+      template: 'box',
+      title: 'Gene Expression'
+    }
+  })
 
   .output('countsOptions', (ctx) =>
     ctx.resultPool.getOptions((spec) => isPColumnSpec(spec) && spec.name === 'countMatrix')
@@ -43,18 +55,6 @@ export const model = BlockModel.create()
 
     return createPlDataTable(ctx, pCols, ctx.uiState?.tableState);
   })
-
-
-  .output('ColumnId', (ctx) => {
-    const pCols = ctx.outputs?.resolve('normPf')?.getPColumns();
-    if (pCols?.length !== 1) {
-      return undefined;
-    }
-
-    return pCols[0].id;
-  })
-
-  .output('newoutput', (ctx) => ctx.outputs?.resolve('normPf')?.listInputFields())
 
   .output('normPf', (ctx): PFrameHandle | undefined => {
     const pCols = ctx.outputs?.resolve('normPf')?.getPColumns();

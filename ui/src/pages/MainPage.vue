@@ -1,38 +1,17 @@
-<script
-  setup
-  lang="ts"
->
+<script setup lang="ts">
 import {
-  PlDataTableSettings,
+  PlAgDataTable,
   PlBlockPage,
   PlBtnGhost,
+  PlDataTableSettings,
+  PlDropdownRef,
   PlMaskIcon24,
   PlSlideModal,
-  PlDropdownRef,
-  PlAgDataTable,
 } from '@platforma-sdk/ui-vue';
-import { GraphMakerSettings } from '@milaboratories/graph-maker';
 import { computed, ref } from 'vue';
 import { useApp } from '../app';
 
 const app = useApp();
-
-if (app.ui === undefined) {
-  app.model.ui = {
-    tableState: {
-      gridState: {},
-      pTableParams: {
-        sorting: [],
-        filters: []
-      }
-    },
-    graphState: {
-      title: "Gene expression",
-      chartType: "discrete",
-      template: "box"
-    } satisfies GraphMakerSettings
-  }
-};
 
 const tableSettings = computed<PlDataTableSettings>(() => ({
   sourceType: "ptable",

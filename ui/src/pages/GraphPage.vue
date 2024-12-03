@@ -1,17 +1,11 @@
 <script setup lang="ts">
-import { GraphMaker, GraphMakerSettings } from "@milaboratories/graph-maker";
+import { GraphMaker } from "@milaboratories/graph-maker";
 import '@milaboratories/graph-maker/styles';
 import { useApp } from "../app";
 
 const app = useApp();
-
-const settings = {
-  chartType: 'discrete',
-  template: 'box',
-  title: 'Gene expression',
-   } as GraphMakerSettings;
 </script>
 
 <template>
-    <graph-maker :pFrame="app.model.outputs.normPf" v-model="settings" />
+  <GraphMaker chartType="discrete" :p-frame="app.model.outputs.normPf" v-model="app.model.ui.graphState" />
 </template>
