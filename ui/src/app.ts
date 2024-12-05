@@ -1,14 +1,17 @@
-import { model } from "@platforma-open/milaboratories.gene-browser.model";
-import { defineApp } from "@platforma-sdk/ui-vue";
-import MainPage from "./pages/MainPage.vue";
-import GraphPage from "./pages/GraphPage.vue";
+import { model } from '@platforma-open/milaboratories.gene-browser.model';
+import { defineApp } from '@platforma-sdk/ui-vue';
+import GraphPage from './pages/GraphPage.vue';
+import MainPage from './pages/MainPage.vue';
 
-export const sdkPlugin = defineApp(model, () => {
+export const sdkPlugin = defineApp(model, (app) => {
   return {
-    routes: {
-      "/": () => MainPage,
-      "/graph": () => GraphPage,
+    progress: () => {
+      return app.model.outputs.isRunning;
     },
+    routes: {
+      '/': () => MainPage,
+      '/graph': () => GraphPage
+    }
   };
 });
 

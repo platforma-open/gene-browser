@@ -53,7 +53,33 @@ export const model = BlockModel.create()
       return undefined;
     }
 
+    // for the table purposes, we set "pl7.app/axisNature": "heterogeneous" on sample axis
+    // for (const col of pCols) {
+    //   for (const axis of col.spec.axesSpec) {
+    //     if (axis.name === 'pl7.app/sampleId') {
+    //       axis.annotations!['pl7.app/axisNature'] = 'heterogeneous';
+    //     }
+    //   }
+    // }
+
     return createPlDataTable(ctx, pCols, ctx.uiState?.tableState);
+  })
+
+  .output('pts', (ctx) => {
+    const pCols = ctx.outputs?.resolve('normPf')?.getPColumns();
+    if (pCols === undefined) {
+      return undefined;
+    }
+
+    // for the table purposes, we set "pl7.app/axisNature": "heterogeneous" on sample axis
+    for (const col of pCols) {
+      for (const axis of col.spec.axesSpec) {
+        if (axis.name === 'pl7.app/sampleId') {
+          axis.annotations!['pl7.app/axisNature'] = 'heterogeneous';
+        }
+      }
+    }
+    return pCols?.map(p => p.spec);
   })
 
   .output('normPf', (ctx): PFrameHandle | undefined => {
@@ -72,6 +98,11 @@ export const model = BlockModel.create()
 
     return ctx.createPFrame([...pCols, ...upstream]);
   })
+
+  /**
+   * Returns true if the block is currently in "running" state
+   */
+  .output('isRunning', (ctx) => ctx.outputs?.getIsReadyOrError() === false)
 
   .sections([
     { type: 'link', href: '/', label: 'Main' },

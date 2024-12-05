@@ -12,7 +12,7 @@
 
 wf := import("@platforma-sdk/workflow-tengo:workflow")
 exec := import("@platforma-sdk/workflow-tengo:exec")
-normCountsPfconvParamsLib := import(":normCountsPfconvParams")
+pfCountsConv := import(":pf-counts-conv")
 xsv := import("@platforma-sdk/workflow-tengo:pframes.xsv")
 pframes := import("@platforma-sdk/workflow-tengo:pframes")
 
@@ -25,11 +25,11 @@ wf.prepare(func(args){
 wf.body(func(args) {
 
 	blockId := wf.blockId().getDataAsJson()
-	
+
 	rawCounts := args.resolvedInput
 	inputSpec := rawCounts.spec
 	species := inputSpec.domain["pl7.app/species"]
-	
+
 	// convert PColumn to csv
 
 	csvCounts := xsv.exportFrame([rawCounts], "csv", {})
@@ -46,7 +46,7 @@ wf.body(func(args) {
 		cache(24 * 60 * 60 * 1000).
 		run()
 
-	normCountsImportParams := normCountsPfconvParamsLib.getColumns(blockId, inputSpec)
+	normCountsImportParams := pfCountsConv.getColumns(blockId, inputSpec)
 	normPf := xsv.importFile(countNorm.getFile("normalized_counts.csv"), "csv", normCountsImportParams)
 
 	// annotateGenes := exec.builder().
@@ -62,7 +62,7 @@ wf.body(func(args) {
 	// 	cache(24 * 60 * 60 * 1000).
 	// 	run()
 
-	
+
 	// rawPf := countNorm.output("rawPf")
 	// logNormPf := countNorm.output("logNormPf")
 

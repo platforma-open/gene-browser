@@ -24,11 +24,11 @@ getColumns := func(blockId, inputSpec) {
             "pl7.app/blockId": blockId
           },
           "annotations": {
-            "pl7.app/label": "Gene symbol"
+            "pl7.app/label": "Gene symbol",
+            "pl7.app/table/orderPriority": "100000"
           }
         }
-      },
-            {
+      }, {
         "column": "NormCounts",
         "id": "normcounts",
         "allowNA": false,
@@ -39,7 +39,8 @@ getColumns := func(blockId, inputSpec) {
             "pl7.app/blockId": blockId
           },
           "annotations": {
-            "pl7.app/label": "Normalized counts"
+            "pl7.app/label": "Normalized counts",
+            "pl7.app/table/hValue": "true"
           }
         }
       }

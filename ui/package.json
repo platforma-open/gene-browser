@@ -15,6 +15,7 @@
     "vue": "catalog:"
   },
   "devDependencies": {
+    "@platforma-sdk/model": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
