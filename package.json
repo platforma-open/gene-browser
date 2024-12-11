@@ -1,53 +1,32 @@
 {
   "name": "@platforma-open/milaboratories.gene-browser",
-  "version": "1.0.0",
   "scripts": {
     "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json,vue}\"",
-    "build": "rm -rf ./block-pack && block-tools pack"
-  },
-  "files": [
-    "index.d.ts",
-    "index.js"
-  ],
-  "dependencies": {
-    "@platforma-open/milaboratories.gene-browser.workflow": "workspace:*",
-    "@platforma-open/milaboratories.gene-browser.model": "workspace:*",
-    "@platforma-open/milaboratories.gene-browser.ui": "workspace:*"
-  },
-  "block": {
-    "components": {
-      "workflow": "@platforma-open/milaboratories.gene-browser.workflow/dist/tengo/tpl/main.plj.gz",
-      "model": "@platforma-open/milaboratories.gene-browser.model/dist/model.json",
-      "ui": "@platforma-open/milaboratories.gene-browser.ui/dist"
-    },
-    "meta": {
-      "title": "Gene browser",
-      "logo": "file:logos/block-logo.png",
-      "url": "https://github.com/milaboratory/platforma-gene-browser",
-      "docs": "https://github.com/milaboratory/platforma-gene-browser/docs",
-      "support": "mailto:support@milaboratories.com",
-      "description": "Visualize and explore gene expression values.",
-      "longDescription": "file:./docs/description.md",
-      "changelog": "file:CHANGELOG.md",
-      "tags": ["rna-seq"],
-      "organization": {
-        "name": "MiLaboratories Inc",
-        "url": "https://milaboratories.com/",
-        "logo": "file:logos/organization-logo.png"
-      }
-    }
+    "build": "turbo run build",
+    "test": "turbo run test --concurrency 1 --env-mode=loose",
+    "mark-stable": "turbo run mark-stable",
+    "watch": "turbo watch build",
+    "changeset": "changeset",
+    "version-packages": "changeset version"
   },
   "devDependencies": {
     "@changesets/cli": "catalog:",
-    "@platforma-sdk/block-tools": "catalog:"
+    "turbo": "catalog:"
+  },
+  "packageManager": "pnpm@9.12.0",
+  "//": {
+    "pnpm": {
+      "overrides": {
+        "@milaboratories/pl-model-common": "file:/Users/poslavskysv/Projects/milab/platforma/platforma-sdk/lib/model/common/package.tgz",
+        "@platforma-sdk/model": "file:/Users/poslavskysv/Projects/milab/platforma/platforma-sdk/sdk/model/package.tgz",
+        "@platforma-sdk/ui-vue": "file:/Users/poslavskysv/Projects/milab/platforma/platforma-sdk/sdk/ui-vue/package.tgz",
+        "@platforma-sdk/workflow-tengo": "file:/Users/poslavskysv/Projects/milab/platforma/platforma-sdk/sdk/workflow-tengo/package.tgz",
+        "@milaboratories/uikit": "file:/Users/poslavskysv/Projects/milab/platforma/platforma-sdk/lib/ui/uikit/package.tgz"
+      }  
+    }
   },
   "pnpm": {
-    "overrides": {
-      "@milaboratories/pl-model-common": "file:/Users/poslavskysv/Projects/milab/platforma/platforma-sdk/lib/model/common/package.tgz",
-      "@platforma-sdk/model": "file:/Users/poslavskysv/Projects/milab/platforma/platforma-sdk/sdk/model/package.tgz",
-      "@platforma-sdk/ui-vue": "file:/Users/poslavskysv/Projects/milab/platforma/platforma-sdk/sdk/ui-vue/package.tgz",
-      "@platforma-sdk/workflow-tengo": "file:/Users/poslavskysv/Projects/milab/platforma/platforma-sdk/sdk/workflow-tengo/package.tgz",
-      "@milaboratories/uikit": "file:/Users/poslavskysv/Projects/milab/platforma/platforma-sdk/lib/ui/uikit/package.tgz"
-    }
+    "overrides": {}
   }
 }
+
