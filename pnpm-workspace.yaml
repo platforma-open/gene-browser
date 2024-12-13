@@ -6,7 +6,7 @@ packages:
   - test
 
 catalog:
-  '@platforma-sdk/block-tools': ^2.4.6
+  '@platforma-sdk/block-tools': ^2.4.11
   '@platforma-sdk/model': ^1.14.1
   '@platforma-sdk/ui-vue': ^1.14.11
   '@platforma-sdk/tengo-builder': ^1.17.3
@@ -20,10 +20,10 @@ catalog:
   '@platforma-open/milaboratories.software-star': ^1.0.1
   '@platforma-open/milaboratories.star-read-mapping.genome-asset': ^1.1.4
 
-  
+
   'vue': ^3.5.13
   'vue-tsc': ^2.1.10
-  
+
   'typescript': ^5.6.3
   'tsup': ~8.3.5
   'turbo': ^2.3.3
