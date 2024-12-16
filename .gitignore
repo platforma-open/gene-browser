@@ -7,3 +7,5 @@ work/
 .test_auth.json
 .turbo
 vite.config.*.timestamp-*
+software/**/*.sw.json
+software/*.tgz
