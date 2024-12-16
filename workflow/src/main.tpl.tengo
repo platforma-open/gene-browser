@@ -15,6 +15,7 @@ exec := import("@platforma-sdk/workflow-tengo:exec")
 pfCountsConv := import(":pf-counts-conv")
 xsv := import("@platforma-sdk/workflow-tengo:pframes.xsv")
 pframes := import("@platforma-sdk/workflow-tengo:pframes")
+assets := import("@platforma-sdk/workflow-tengo:assets")
 
 wf.prepare(func(args){
 	return{
@@ -35,8 +36,7 @@ wf.body(func(args) {
 	csvCounts := xsv.exportFrame([rawCounts], "csv", {})
 
 	countNorm := exec.builder().
-		cmd("Rscript").
-		arg("/Users/poslavskysv/Projects/milab/platforma/blocks/gene-browser/scripts/normalize_counts.R").
+		software(assets.importSoftware("@platforma-open/milaboratories.run-normalize-counts-r.software:main")).
 		arg("rawCounts.csv").arg(".").arg(species).
 		addFile("rawCounts.csv", csvCounts).
 		saveFile("normalized_counts.csv").
