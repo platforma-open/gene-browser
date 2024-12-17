@@ -14,6 +14,7 @@ import {
 export type UiState = {
   tableState: PlDataTableState;
   graphState: GraphMakerState;
+  anchorColumn?: PlRef;
 };
 
 export type BlockArgs = {
@@ -48,8 +49,17 @@ export const model = BlockModel.create()
   })
 
   .output('pt', (ctx) => {
-    const pCols = ctx.outputs?.resolve('normPf')?.getPColumns();
-    if (pCols === undefined) {
+    // const pCols = ctx.outputs?.resolve('normPf')?.getPColumns();
+    // if (pCols === undefined) {
+    //   return undefined;
+    // }
+
+    const anchorColumn = ctx.uiState?.anchorColumn;
+    if (!anchorColumn) return undefined;
+
+    const anchorSpec = ctx.resultPool.getSpecByRef(anchorColumn);
+    if (!anchorSpec || !isPColumnSpec(anchorSpec)) {
+      console.error('Anchor spec is undefined or is not PColumnSpec', anchorSpec);
       return undefined;
     }
 
@@ -62,31 +72,85 @@ export const model = BlockModel.create()
     //   }
     // }
 
-    return createPlDataTable(ctx, pCols, ctx.uiState?.tableState);
+    const columns = ctx.resultPool
+    .getData()
+    .entries.map((o) => o.obj)
+    .filter(isPColumn)
+    .filter((col) => {
+      if (!isPColumnSpec(col.spec)) return false;
+
+     if(col.spec.domain?.['pl7.app/blockId'] === anchorSpec.domain?.['pl7.app/blockId'] &&
+      col.spec.annotations?.['pl7.app/rna-seq/normalized'] === anchorSpec.annotations?.['pl7.app/rna-seq/normalized']
+     ){
+      return col.spec
+     } else {
+      return undefined
+     }
+    });
+
+    // return createPlDataTable(ctx, pCols, ctx.uiState?.tableState);
+    return createPlDataTable(ctx, columns, ctx.uiState?.tableState);
   })
 
-  .output('pts', (ctx) => {
-    const pCols = ctx.outputs?.resolve('normPf')?.getPColumns();
-    if (pCols === undefined) {
+  // .output('pts', (ctx) => {
+  //   const pCols = ctx.outputs?.resolve('normPf')?.getPColumns();
+  //   if (pCols === undefined) {
+  //     return undefined;
+  //   }
+
+  //   // for the table purposes, we set "pl7.app/axisNature": "heterogeneous" on sample axis
+  //   // for (const col of pCols) {
+  //   //   for (const axis of col.spec.axesSpec) {
+  //   //     if (axis.name === 'pl7.app/sampleId') {
+  //   //       axis.annotations!['pl7.app/axisNature'] = 'heterogeneous';
+  //   //     }
+  //   //   }
+  //   // }
+  //   return pCols?.map(p => p.spec);
+  // })
+
+  // .output('normPf', (ctx): PFrameHandle | undefined => {
+  //   const pCols = ctx.outputs?.resolve('normPf')?.getPColumns();
+  //   if (pCols === undefined) {
+  //     return undefined;
+  //   }
+
+  //   // enriching with upstream data
+  //   const valueTypes = ['Int', 'Float', 'Double', 'String'] as ValueType[];
+  //   const upstream = ctx.resultPool
+  //     .getData()
+  //     .entries.map((v) => v.obj)
+  //     .filter(isPColumn)
+  //     .filter((column) => valueTypes.find((valueType) => valueType === column.spec.valueType));
+
+  //   return ctx.createPFrame([...pCols, ...upstream]);
+  // })
+
+  .output('plotPf', (ctx): PFrameHandle | undefined => {
+    const anchorColumn = ctx.uiState?.anchorColumn;
+    if (!anchorColumn) return undefined;
+
+    const anchorSpec = ctx.resultPool.getSpecByRef(anchorColumn);
+    if (!anchorSpec || !isPColumnSpec(anchorSpec)) {
+      console.error('Anchor spec is undefined or is not PColumnSpec', anchorSpec);
       return undefined;
     }
 
-    // for the table purposes, we set "pl7.app/axisNature": "heterogeneous" on sample axis
-    for (const col of pCols) {
-      for (const axis of col.spec.axesSpec) {
-        if (axis.name === 'pl7.app/sampleId') {
-          axis.annotations!['pl7.app/axisNature'] = 'heterogeneous';
-        }
-      }
-    }
-    return pCols?.map(p => p.spec);
-  })
+    const columns = ctx.resultPool
+    .getData()
+    .entries.map((o) => o.obj)
+    .filter(isPColumn)
+    .filter((col) => {
+      if (!isPColumnSpec(col.spec)) return false;
 
-  .output('normPf', (ctx): PFrameHandle | undefined => {
-    const pCols = ctx.outputs?.resolve('normPf')?.getPColumns();
-    if (pCols === undefined) {
-      return undefined;
-    }
+     if(col.spec.domain?.['pl7.app/blockId'] === anchorSpec.domain?.['pl7.app/blockId'] &&
+      col.spec.annotations?.['pl7.app/rna-seq/normalized'] === anchorSpec.annotations?.['pl7.app/rna-seq/normalized']
+     ){
+      return col.spec
+     } else {
+      return undefined
+     }
+    });
 
     // enriching with upstream data
     const valueTypes = ['Int', 'Float', 'Double', 'String'] as ValueType[];
@@ -96,8 +160,9 @@ export const model = BlockModel.create()
       .filter(isPColumn)
       .filter((column) => valueTypes.find((valueType) => valueType === column.spec.valueType));
 
-    return ctx.createPFrame([...pCols, ...upstream]);
+    return ctx.createPFrame([...columns, ...upstream]);
   })
+
 
   /**
    * Returns true if the block is currently in "running" state

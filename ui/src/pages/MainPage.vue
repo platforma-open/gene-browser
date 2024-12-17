@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PTableColumnSpec } from '@platforma-sdk/model';
+import { PlRef, PTableColumnSpec } from '@platforma-sdk/model';
 import {
   PlAgDataTable,
   PlAgDataTableController,
@@ -15,6 +15,10 @@ import { computed, ref } from 'vue';
 import { useApp } from '../app';
 
 const app = useApp();
+
+function setAnchorColumn(ref: PlRef | undefined) {
+  app.model.ui.anchorColumn = ref;
+}
 
 const tableSettings = computed<PlDataTableSettings>(() => ({
   sourceType: "ptable",
@@ -51,8 +55,13 @@ const tableInstance = ref<PlAgDataTableController>();
 
     <PlSlideModal v-model="settingsAreShown">
       <template #title>Settings</template>
-      <PlDropdownRef v-model="app.model.args.countsRef" :options="app.model.outputs.countsOptions"
-        label="Select dataset" />
+      <PlDropdownRef       
+        :options="app.model.outputs.countsOptions"
+        :model-value="app.model.ui.anchorColumn"
+        @update:model-value="setAnchorColumn"
+        label="Select dataset"
+        clearable
+        />
     </PlSlideModal>
 
     <PlAgDataTable v-if="app.model.ui" :settings="tableSettings" v-model="app.model.ui.tableState" show-columns-panel
