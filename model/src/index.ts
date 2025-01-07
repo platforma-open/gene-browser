@@ -43,20 +43,17 @@ export const model = BlockModel.create()
     ctx.resultPool.getOptions((spec) => isPColumnSpec(spec) && spec.name === 'countMatrix')
   )
 
-  .output('datasetSpec', (ctx) => {
-    if (ctx.args.countsRef) return ctx.resultPool.getSpecByRef(ctx.args.countsRef);
-    else return undefined;
-  })
-
   .output('pt', (ctx) => {
     // const pCols = ctx.outputs?.resolve('normPf')?.getPColumns();
     // if (pCols === undefined) {
     //   return undefined;
     // }
 
+    // Count data
+    // return the Reference of the Pcolumn selected as input dataset in Settings
     const anchorColumn = ctx.uiState?.anchorColumn;
     if (!anchorColumn) return undefined;
-
+    // Get the specs of that selected Pcolumn
     const anchorSpec = ctx.resultPool.getSpecByRef(anchorColumn);
     if (!anchorSpec || !isPColumnSpec(anchorSpec)) {
       console.error('Anchor spec is undefined or is not PColumnSpec', anchorSpec);
@@ -79,8 +76,14 @@ export const model = BlockModel.create()
     .filter((col) => {
       if (!isPColumnSpec(col.spec)) return false;
 
+      // Include count data if matches user input blockID and normlization stage
      if(col.spec.domain?.['pl7.app/blockId'] === anchorSpec.domain?.['pl7.app/blockId'] &&
       col.spec.annotations?.['pl7.app/rna-seq/normalized'] === anchorSpec.annotations?.['pl7.app/rna-seq/normalized']
+     ){
+      return col.spec
+      // Include Gene Symbol data from same blockID as input counts
+      } else if (col.spec.domain?.['pl7.app/blockId'] === anchorSpec.domain?.['pl7.app/blockId'] &&
+        col.spec.annotations?.['pl7.app/label'] === 'Gene Symbol'
      ){
       return col.spec
      } else {
@@ -152,13 +155,16 @@ export const model = BlockModel.create()
      }
     });
 
-    // enriching with upstream data
+    // enriching with upstream metadata
     const valueTypes = ['Int', 'Float', 'Double', 'String'] as ValueType[];
     const upstream = ctx.resultPool
       .getData()
       .entries.map((v) => v.obj)
       .filter(isPColumn)
-      .filter((column) => valueTypes.find((valueType) => valueType === column.spec.valueType));
+      .filter((column) => valueTypes.find((valueType) => (valueType === column.spec.valueType) && (
+                                                          column.id.includes("metadata")
+                                                        )
+    ));
 
     return ctx.createPFrame([...columns, ...upstream]);
   })
