@@ -1,5 +1,14 @@
 # @platforma-open/milaboratories.gene-browser
 
+## 1.2.2
+
+### Patch Changes
+
+- Updated dependencies [aadaec3]
+  - @platforma-open/milaboratories.gene-browser.workflow@1.2.0
+  - @platforma-open/milaboratories.gene-browser.model@1.2.0
+  - @platforma-open/milaboratories.gene-browser.ui@1.2.0
+
 ## 1.2.1
 
 ### Patch Changes
