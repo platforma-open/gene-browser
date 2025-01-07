@@ -4,8 +4,10 @@ import '@milaboratories/graph-maker/styles';
 import { useApp } from "../app";
 
 const app = useApp();
+
 </script>
 
 <template>
-  <GraphMaker chartType="discrete" :p-frame="app.model.outputs.plotPf" v-model="app.model.ui.graphState" />
+  <GraphMaker chartType="discrete" :p-frame="app.model.outputs.plotPf" 
+  v-model="app.model.ui.graphState" />
 </template>
