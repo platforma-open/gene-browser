@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.gene-browser.model
 
+## 1.3.0
+
+### Minor Changes
+
+- d236acf: Reshape counts table from long to wide format
+
 ## 1.2.0
 
 ### Minor Changes
