@@ -31,7 +31,7 @@
       "support": "mailto:support@milaboratories.com",
       "description": "Visualize and explore gene expression values.",
       "longDescription": "file:../docs/description.md",
-      "changelog": "file:../CHANGELOG.md",
+      "changelog": "file:./CHANGELOG.md",
       "tags": [
         "rna-seq"
       ],

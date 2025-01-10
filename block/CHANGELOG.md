@@ -29,3 +29,7 @@
 ### Minor Changes
 
 - 54ca780: chore; bump version
+
+## 1.0.0
+
+Initial release.
