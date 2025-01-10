@@ -3,11 +3,8 @@ import { defineApp } from '@platforma-sdk/ui-vue';
 import GraphPage from './pages/GraphPage.vue';
 import MainPage from './pages/MainPage.vue';
 
-export const sdkPlugin = defineApp(model, (app) => {
+export const sdkPlugin = defineApp(model, () => {
   return {
-    progress: () => {
-      return app.model.outputs.isRunning;
-    },
     routes: {
       '/': () => MainPage,
       '/graph': () => GraphPage

@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { PlRef, PTableColumnSpec } from '@platforma-sdk/model';
+import { PlRef } from '@platforma-sdk/model';
 import {
   PlAgDataTable,
-  PlAgDataTableController,
   PlAgDataTableToolsPanel,
   PlBlockPage,
   PlBtnGhost,
   PlDataTableSettings,
   PlDropdownRef,
   PlMaskIcon24,
-  PlSlideModal,
+  PlSlideModal
 } from '@platforma-sdk/ui-vue';
 import { computed, ref } from 'vue';
 import { useApp } from '../app';
@@ -29,9 +28,6 @@ const tableSettings = computed<PlDataTableSettings>(() => ({
 
 const settingsAreShown = ref(app.model.outputs.pt === undefined)
 const showSettings = () => { settingsAreShown.value = true }
-const columns = ref<PTableColumnSpec[]>([]);
-const tableInstance = ref<PlAgDataTableController>();
-
 </script>
 
 <template>
@@ -39,12 +35,6 @@ const tableInstance = ref<PlAgDataTableController>();
     <template #title>Gene Browser</template>
     <template #append>
       <PlAgDataTableToolsPanel />
-      <PlBtnGhost @click.stop="() => tableInstance?.exportCsv()">
-        Export
-        <template #append>
-          <PlMaskIcon24 name="export" />
-        </template>
-      </PlBtnGhost>
       <PlBtnGhost @click.stop="showSettings">
         Settings
         <template #append>
@@ -55,16 +45,11 @@ const tableInstance = ref<PlAgDataTableController>();
 
     <PlSlideModal v-model="settingsAreShown">
       <template #title>Settings</template>
-      <PlDropdownRef       
-        :options="app.model.outputs.countsOptions"
-        :model-value="app.model.ui.anchorColumn"
-        @update:model-value="setAnchorColumn"
-        label="Select dataset"
-        clearable
-        />
+      <PlDropdownRef :options="app.model.outputs.countsOptions" :model-value="app.model.ui.anchorColumn"
+        @update:model-value="setAnchorColumn" label="Select dataset" clearable />
     </PlSlideModal>
 
     <PlAgDataTable v-if="app.model.ui" :settings="tableSettings" v-model="app.model.ui.tableState" show-columns-panel
-      ref="tableInstance" @columns-changed="(newColumns) => (columns = newColumns)" />
+      show-export-button />
   </PlBlockPage>
 </template>
