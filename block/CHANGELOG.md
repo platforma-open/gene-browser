@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.gene-browser
 
+## 1.2.3
+
+### Patch Changes
+
+- d5e3de2: chore: fix changelog
+
 ## 1.2.2
 
 ### Patch Changes
