@@ -6,16 +6,16 @@ packages:
   - test
 
 catalog:
-  '@platforma-sdk/block-tools': ^2.5.0
-  '@platforma-sdk/model': ^1.14.1
-  '@platforma-sdk/ui-vue': ^1.14.11
-  '@platforma-sdk/tengo-builder': ^1.17.3
+  '@platforma-sdk/block-tools': ^2.5.3
+  '@platforma-sdk/model': ^1.21.20
+  '@platforma-sdk/ui-vue': ^1.21.24
+  '@platforma-sdk/tengo-builder': ^1.17.5
   '@platforma-sdk/workflow-tengo': ^2.6.0
 
   '@platforma-sdk/test': ^1.10.4
-  '@milaboratories/graph-maker': ^1.1.5
-  '@milaboratories/software-pframes-conv': ^2.1.2
-  '@platforma-open/milaboratories.software-small-binaries': ^1.14.6
+  '@milaboratories/graph-maker': ^1.1.22
+  '@milaboratories/software-pframes-conv': ^2.1.5
+  '@platforma-open/milaboratories.software-small-binaries': ^1.15.6
   '@platforma-open/milaboratories.software-subread': ^1.0.0
   '@platforma-open/milaboratories.software-star': ^1.0.1
   '@platforma-open/milaboratories.star-read-mapping.genome-asset': ^1.1.4
