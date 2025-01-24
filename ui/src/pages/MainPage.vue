@@ -11,7 +11,7 @@ import {
   PlMaskIcon24,
   PlSlideModal,
 } from '@platforma-sdk/ui-vue';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useApp } from '../app';
 
 const app = useApp();
