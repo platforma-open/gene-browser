@@ -1,5 +1,12 @@
 # @platforma-open/milaboratories.gene-browser.model
 
+## 1.4.0
+
+### Minor Changes
+
+- e12c7fa: Updated dependencies
+- ce2fb76: Add Gene expression heatmap
+
 ## 1.3.0
 
 ### Minor Changes
