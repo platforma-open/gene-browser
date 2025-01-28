@@ -167,16 +167,6 @@ export const model = BlockModel.create()
     );
   })
 
-  .output('test', (ctx) => {
-    const columns = (ctx.resultPool
-        .getData()
-        .entries.map((c) => c.obj)
-        .filter(isPColumn)).filter((col) => {
-            if (1==1) {return col.spec} 
-            })
-    return columns
-  })
-
   // Get gene symbol spec
   .output('geneSymbolSpec', (ctx) => {
     // return the Reference of the p-column selected as input dataset in Settings
