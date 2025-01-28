@@ -2,6 +2,7 @@ import { GraphMakerState } from '@milaboratories/graph-maker';
 import {
   AxisSpec,
   BlockModel,
+  createPFrameForGraphs,
   createPlDataTable,
   InferOutputsType,
   isPColumn,
@@ -16,6 +17,7 @@ export type UiState = {
   tableState: PlDataTableState;
   graphState: GraphMakerState;
   anchorColumn?: PlRef;
+  heatmapState: GraphMakerState;
 };
 
 export type BlockArgs = {
@@ -50,11 +52,24 @@ export const model = BlockModel.create()
     graphState: {
       template: 'box',
       title: 'Gene Expression'
+    },
+    heatmapState: {
+      template: "heatmapClustered",
+      title: "Expression Heatmap"
     }
   })
 
+   // Activate "Run" button only after these conditions get fulfilled
+   .argsValid((ctx) =>  // Input dataset has been selected
+    ctx.uiState?.anchorColumn !== undefined )
+
+  // Filters to define allowed input data
   .output('countsOptions', (ctx) =>
-    ctx.resultPool.getOptions((spec) => isPColumnSpec(spec) && spec.name === 'countMatrix')
+    ctx.resultPool.getOptions((spec) => isPColumnSpec(spec) && 
+                // We temporarilly add backwards compatibility (spec.name === 'countMatrix')
+                // @TODO: remove it when versions are stable
+                (spec.name === 'pl7.app/rna-seq/countMatrix' || spec.name === 'countMatrix')
+              )
   )
 
   .output('anchorSpec', (ctx) => {
@@ -91,11 +106,19 @@ export const model = BlockModel.create()
       .filter((col) => {
         if (col.id === anchorColumn.id) return false;
 
-        // @TODO normalized or not should be a part of domain
+        // Normalization stage has to be same as in input dataset (anchorColumn)
         if (
-          col.spec.annotations?.['pl7.app/rna-seq/normalized'] &&
-          col.spec.annotations['pl7.app/rna-seq/normalized'] !==
-            anchorColumn.spec.annotations?.['pl7.app/rna-seq/normalized']
+          col.spec.domain?.['pl7.app/rna-seq/normalized'] &&
+          (col.spec.domain['pl7.app/rna-seq/normalized'] !==
+            anchorColumn.spec.domain?.['pl7.app/rna-seq/normalized']) 
+        )
+          return false
+
+        // We temporarilly add backwards compatibility
+        // @TODO: remove it when versions are stable
+        if (col.spec.annotations?.['pl7.app/rna-seq/normalized'] && 
+        (col.spec.annotations['pl7.app/rna-seq/normalized'] !==
+          anchorColumn.spec.annotations?.['pl7.app/rna-seq/normalized'])
         )
           return false;
 
@@ -122,8 +145,21 @@ export const model = BlockModel.create()
     return createPlDataTable(ctx, columns, ctx.uiState?.tableState);
   })
 
-  .output('plotPf', (ctx): PFrameHandle | undefined => {
+  // Boxplot Pf without DEG
+  // @TODO Allow histogram of DEG values
+  .output('boxplotPf', (ctx): PFrameHandle | undefined => {
     return ctx.createPFrame(
+      ctx.resultPool
+        .getData()
+        .entries.map((c) => c.obj)
+        .filter(isPColumn)
+        .filter((col) => col.spec.name !== 'pl7.app/rna-seq/DEG' )
+    );
+  })
+
+  // Heatmap Pf with DEG
+  .output('heatmapPf', (ctx): PFrameHandle | undefined => {
+    return createPFrameForGraphs(ctx,
       ctx.resultPool
         .getData()
         .entries.map((c) => c.obj)
@@ -131,9 +167,76 @@ export const model = BlockModel.create()
     );
   })
 
+  // Get gene symbol spec
+  .output('geneSymbolSpec', (ctx) => {
+    // return the Reference of the p-column selected as input dataset in Settings
+    if (!ctx.uiState?.anchorColumn) return undefined;
+
+    // Get the specs of that selected p-column
+    const anchorColumn = ctx.resultPool.getPColumnByRef(ctx.uiState?.anchorColumn);
+    if (!anchorColumn) {
+      console.error('Anchor column is undefined or is not PColumn');
+      return undefined;
+    }
+
+    const anchorGeneAxis = getGeneIdAxis(anchorColumn.spec);
+    const symbolColumns = ctx.resultPool
+      .getData()
+      .entries.map((o) => o.obj)
+      .filter(isPColumn)
+      .filter((col) => {
+
+        
+        if (
+          col.spec.name === 'geneSymbols' &&
+          // Gene ID axis has to be same as in input data
+          matchGeneIdAxis(anchorGeneAxis, getGeneIdAxis(col.spec) )
+        ) {
+          return true;
+        }
+
+        return false;
+      });
+
+    return symbolColumns[0].spec
+    })
+
+    // Get DEG pframe
+  .output('DEGpf', (ctx) => {
+    // return the Reference of the p-column selected as input dataset in Settings
+    if (!ctx.uiState?.anchorColumn) return undefined;
+
+    // Get the specs of that selected p-column
+    const anchorColumn = ctx.resultPool.getPColumnByRef(ctx.uiState?.anchorColumn);
+    if (!anchorColumn) {
+      console.error('Anchor column is undefined or is not PColumn');
+      return undefined;
+    }
+
+    const anchorGeneAxis = getGeneIdAxis(anchorColumn.spec);
+    const DEGcolumns = ctx.resultPool
+      .getData()
+      .entries.map((o) => o.obj)
+      .filter(isPColumn)
+      .filter((col) => {
+
+        
+        if (
+          col.spec.name === 'pl7.app/rna-seq/DEG' 
+        ) {
+          return true;
+        }
+
+        return false;
+      });
+
+    return DEGcolumns
+    })
+
   .sections([
     { type: 'link', href: '/', label: 'Main' },
-    { type: 'link', href: '/graph', label: 'Graph' }
+    { type: 'link', href: '/graph', label: 'Gene Expression' },
+    { type: "link", href: "/heatmap", label: "Expression Heatmap" },
   ])
 
   .done();
