@@ -4,14 +4,13 @@ import GraphPage from './pages/GraphPage.vue';
 import MainPage from './pages/MainPage.vue';
 import heatmapPage from './pages/heatmapPage.vue';
 
-
 export const sdkPlugin = defineApp(model, () => {
   return {
     routes: {
       '/': () => MainPage,
       '/graph': () => GraphPage,
-      '/heatmap': () => heatmapPage
-    }
+      '/heatmap': () => heatmapPage,
+    },
   };
 });
 

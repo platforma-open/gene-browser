@@ -1,16 +1,18 @@
-import { GraphMakerState } from '@milaboratories/graph-maker';
-import {
+import type { GraphMakerState } from '@milaboratories/graph-maker';
+import type {
   AxisSpec,
-  BlockModel,
-  createPFrameForGraphs,
-  createPlDataTable,
   InferOutputsType,
-  isPColumn,
-  isPColumnSpec,
   PColumnSpec,
   PFrameHandle,
   PlDataTableState,
-  PlRef
+  PlRef,
+} from '@platforma-sdk/model';
+import {
+  BlockModel,
+  createPFrameForGraphs,
+  createPlDataTable,
+  isPColumn,
+  isPColumnSpec,
 } from '@platforma-sdk/model';
 
 export type UiState = {
@@ -26,9 +28,9 @@ export type BlockArgs = {
 
 function getGeneIdAxis(spec: PColumnSpec): AxisSpec | undefined {
   if (
-    spec.axesSpec.length === 2 &&
-    spec.axesSpec[0].name === 'pl7.app/sampleId' &&
-    spec.axesSpec[1].name === 'pl7.app/rna-seq/geneId'
+    spec.axesSpec.length === 2
+    && spec.axesSpec[0].name === 'pl7.app/sampleId'
+    && spec.axesSpec[1].name === 'pl7.app/rna-seq/geneId'
   )
     return spec.axesSpec[1];
   return undefined;
@@ -46,30 +48,30 @@ export const model = BlockModel.create()
       gridState: {},
       pTableParams: {
         sorting: [],
-        filters: []
-      }
+        filters: [],
+      },
     },
     graphState: {
       template: 'box',
-      title: 'Gene Expression'
+      title: 'Gene Expression',
     },
     heatmapState: {
-      template: "heatmapClustered",
-      title: "Expression Heatmap"
-    }
+      template: 'heatmapClustered',
+      title: 'Expression Heatmap',
+    },
   })
 
-   // Activate "Run" button only after these conditions get fulfilled
-   .argsValid((ctx) =>  // Input dataset has been selected
-    ctx.uiState?.anchorColumn !== undefined )
+// Activate "Run" button only after these conditions get fulfilled
+  .argsValid((ctx) => // Input dataset has been selected
+    ctx.uiState?.anchorColumn !== undefined)
 
   // Filters to define allowed input data
   .output('countsOptions', (ctx) =>
-    ctx.resultPool.getOptions((spec) => isPColumnSpec(spec) && 
-                // We temporarilly add backwards compatibility (spec.name === 'countMatrix')
-                // @TODO: remove it when versions are stable
-                (spec.name === 'pl7.app/rna-seq/countMatrix' || spec.name === 'countMatrix')
-              )
+    ctx.resultPool.getOptions((spec) => isPColumnSpec(spec)
+    // We temporarilly add backwards compatibility (spec.name === 'countMatrix')
+    // @TODO: remove it when versions are stable
+      && (spec.name === 'pl7.app/rna-seq/countMatrix' || spec.name === 'countMatrix'),
+    ),
   )
 
   .output('anchorSpec', (ctx) => {
@@ -108,17 +110,17 @@ export const model = BlockModel.create()
 
         // Normalization stage has to be same as in input dataset (anchorColumn)
         if (
-          col.spec.domain?.['pl7.app/rna-seq/normalized'] &&
-          (col.spec.domain['pl7.app/rna-seq/normalized'] !==
-            anchorColumn.spec.domain?.['pl7.app/rna-seq/normalized']) 
+          col.spec.domain?.['pl7.app/rna-seq/normalized']
+          && (col.spec.domain['pl7.app/rna-seq/normalized']
+            !== anchorColumn.spec.domain?.['pl7.app/rna-seq/normalized'])
         )
-          return false
+          return false;
 
         // We temporarilly add backwards compatibility
         // @TODO: remove it when versions are stable
-        if (col.spec.annotations?.['pl7.app/rna-seq/normalized'] && 
-        (col.spec.annotations['pl7.app/rna-seq/normalized'] !==
-          anchorColumn.spec.annotations?.['pl7.app/rna-seq/normalized'])
+        if (col.spec.annotations?.['pl7.app/rna-seq/normalized']
+          && (col.spec.annotations['pl7.app/rna-seq/normalized']
+            !== anchorColumn.spec.annotations?.['pl7.app/rna-seq/normalized'])
         )
           return false;
 
@@ -153,7 +155,7 @@ export const model = BlockModel.create()
         .getData()
         .entries.map((c) => c.obj)
         .filter(isPColumn)
-        .filter((col) => col.spec.name !== 'pl7.app/rna-seq/DEG' )
+        .filter((col) => col.spec.name !== 'pl7.app/rna-seq/DEG'),
     );
   })
 
@@ -163,8 +165,11 @@ export const model = BlockModel.create()
       ctx.resultPool
         .getData()
         .entries.map((c) => c.obj)
-        .filter(isPColumn)
-    );
+        .filter(isPColumn).filter((col) => {
+          if (col.spec.name !== 'pl7.app/rna-seq/regulationDirection') {
+            return true;
+          }
+        }));
   })
 
   // Get gene symbol spec
@@ -185,58 +190,39 @@ export const model = BlockModel.create()
       .entries.map((o) => o.obj)
       .filter(isPColumn)
       .filter((col) => {
-
-        
         if (
-          col.spec.name === 'geneSymbols' &&
+          col.spec.name === 'geneSymbols'
           // Gene ID axis has to be same as in input data
-          matchGeneIdAxis(anchorGeneAxis, getGeneIdAxis(col.spec) )
+          && matchGeneIdAxis(anchorGeneAxis, getGeneIdAxis(col.spec))
         ) {
           return true;
         }
-
-        return false;
       });
 
-    return symbolColumns[0].spec
-    })
+    return symbolColumns[0].spec;
+  })
 
-    // Get DEG pframe
+// Get DEG pframe
   .output('DEGpf', (ctx) => {
-    // return the Reference of the p-column selected as input dataset in Settings
-    if (!ctx.uiState?.anchorColumn) return undefined;
-
-    // Get the specs of that selected p-column
-    const anchorColumn = ctx.resultPool.getPColumnByRef(ctx.uiState?.anchorColumn);
-    if (!anchorColumn) {
-      console.error('Anchor column is undefined or is not PColumn');
-      return undefined;
-    }
-
-    const anchorGeneAxis = getGeneIdAxis(anchorColumn.spec);
     const DEGcolumns = ctx.resultPool
       .getData()
       .entries.map((o) => o.obj)
       .filter(isPColumn)
       .filter((col) => {
-
-        
         if (
-          col.spec.name === 'pl7.app/rna-seq/DEG' 
+          col.spec.name === 'pl7.app/rna-seq/DEG'
         ) {
           return true;
         }
-
-        return false;
       });
 
-    return DEGcolumns
-    })
+    return DEGcolumns;
+  })
 
   .sections([
     { type: 'link', href: '/', label: 'Main' },
     { type: 'link', href: '/graph', label: 'Gene Expression' },
-    { type: "link", href: "/heatmap", label: "Expression Heatmap" },
+    { type: 'link', href: '/heatmap', label: 'Expression Heatmap' },
   ])
 
   .done();

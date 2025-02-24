@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { PlRef } from '@platforma-sdk/model';
+import type { PlRef } from '@platforma-sdk/model';
+import type {
+  PlDataTableSettings } from '@platforma-sdk/ui-vue';
 import {
   PlAgDataTable,
   PlAgDataTableToolsPanel,
   PlBlockPage,
   PlBtnGhost,
-  PlDataTableSettings,
   PlDropdownRef,
   PlMaskIcon24,
-  PlSlideModal
+  PlSlideModal,
 } from '@platforma-sdk/ui-vue';
 import { computed, ref } from 'vue';
 import { useApp } from '../app';
@@ -20,14 +21,16 @@ function setAnchorColumn(ref: PlRef | undefined) {
 }
 
 const tableSettings = computed<PlDataTableSettings>(() => ({
-  sourceType: "ptable",
+  sourceType: 'ptable',
 
   pTable: app.model.outputs.pt,
 
 } satisfies PlDataTableSettings));
 
-const settingsAreShown = ref(app.model.outputs.pt === undefined)
-const showSettings = () => { settingsAreShown.value = true }
+const settingsAreShown = ref(app.model.outputs.pt === undefined);
+const showSettings = () => {
+  settingsAreShown.value = true;
+};
 </script>
 
 <template>
@@ -45,11 +48,15 @@ const showSettings = () => { settingsAreShown.value = true }
 
     <PlSlideModal v-model="settingsAreShown">
       <template #title>Settings</template>
-      <PlDropdownRef :options="app.model.outputs.countsOptions" :model-value="app.model.ui.anchorColumn"
-        @update:model-value="setAnchorColumn" label="Select dataset" clearable />
+      <PlDropdownRef
+        :options="app.model.outputs.countsOptions" :model-value="app.model.ui.anchorColumn"
+        label="Select dataset" clearable @update:model-value="setAnchorColumn"
+      />
     </PlSlideModal>
 
-    <PlAgDataTable v-if="app.model.ui" :settings="tableSettings" v-model="app.model.ui.tableState" show-columns-panel
-      show-export-button />
+    <PlAgDataTable
+      v-if="app.model.ui" v-model="app.model.ui.tableState" :settings="tableSettings" show-columns-panel
+      show-export-button
+    />
   </PlBlockPage>
 </template>
