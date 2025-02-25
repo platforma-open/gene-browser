@@ -26,14 +26,15 @@
     "meta": {
       "title": "Gene browser",
       "logo": "file:../logos/block-logo.png",
-      "url": "https://github.com/milaboratory/platforma-gene-browser",
-      "docs": "https://github.com/milaboratory/platforma-gene-browser/docs",
+      "url": "https://github.com/platforma-open/gene-browser",
+      "docs": "https://github.com/platforma-open/gene-browser/docs",
       "support": "mailto:support@milaboratories.com",
       "description": "Visualize and explore gene expression values.",
       "longDescription": "file:../docs/description.md",
       "changelog": "file:./CHANGELOG.md",
       "tags": [
-        "rna-seq"
+        "rna-seq",
+        "view"
       ],
       "organization": {
         "name": "MiLaboratories Inc",
