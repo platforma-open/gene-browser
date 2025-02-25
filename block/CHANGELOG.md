@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.gene-browser
 
+## 1.3.0
+
+### Minor Changes
+
+- f2fee2f: Updated metadata
+
 ## 1.2.5
 
 ### Patch Changes
