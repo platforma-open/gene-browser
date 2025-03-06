@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.gene-browser.model
 
+## 1.4.1
+
+### Patch Changes
+
+- 26f52d2: Updated to new STAR version exports
+
 ## 1.4.0
 
 ### Minor Changes
