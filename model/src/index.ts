@@ -188,7 +188,10 @@ export const model = BlockModel.create()
 
         
         if (
-          col.spec.name === 'geneSymbols' &&
+          // col.spec.name === 'geneSymbols' &&
+          // We temporarilly add backwards compatibility (spec.name === 'countMatrix')
+          // @TODO: remove it when versions are stable
+          (col.spec.name === 'pl7.app/rna-seq/geneSymbols' || col.spec.name === 'geneSymbols') &&
           // Gene ID axis has to be same as in input data
           matchGeneIdAxis(anchorGeneAxis, getGeneIdAxis(col.spec) )
         ) {
