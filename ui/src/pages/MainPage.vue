@@ -19,13 +19,13 @@ function setAnchorColumn(ref: PlRef | undefined) {
   app.model.ui.anchorColumn = ref;
 }
 
-const tableSettings = computed<PlDataTableSettings>(
-  () =>
-    ({
-      sourceType: 'ptable',
-
-      pTable: app.model.outputs.pt
-    } satisfies PlDataTableSettings)
+const tableSettings = computed<PlDataTableSettings | undefined>(() =>
+  app.model.ui.anchorColumn
+    ? ({
+        sourceType: 'ptable',
+        pTable: app.model.outputs.pt
+      } satisfies PlDataTableSettings)
+    : undefined
 );
 
 const settingsAreShown = ref(app.model.outputs.pt === undefined);
@@ -59,7 +59,6 @@ const showSettings = () => {
     </PlSlideModal>
 
     <PlAgDataTable
-      v-if="app.model.ui"
       :settings="tableSettings"
       v-model="app.model.ui.tableState"
       show-columns-panel
