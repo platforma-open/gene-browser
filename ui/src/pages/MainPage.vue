@@ -19,15 +19,19 @@ function setAnchorColumn(ref: PlRef | undefined) {
   app.model.ui.anchorColumn = ref;
 }
 
-const tableSettings = computed<PlDataTableSettings>(() => ({
-  sourceType: "ptable",
+const tableSettings = computed<PlDataTableSettings>(
+  () =>
+    ({
+      sourceType: 'ptable',
 
-  pTable: app.model.outputs.pt,
+      pTable: app.model.outputs.pt
+    } satisfies PlDataTableSettings)
+);
 
-} satisfies PlDataTableSettings));
-
-const settingsAreShown = ref(app.model.outputs.pt === undefined)
-const showSettings = () => { settingsAreShown.value = true }
+const settingsAreShown = ref(app.model.outputs.pt === undefined);
+const showSettings = () => {
+  settingsAreShown.value = true;
+};
 </script>
 
 <template>
@@ -45,11 +49,21 @@ const showSettings = () => { settingsAreShown.value = true }
 
     <PlSlideModal v-model="settingsAreShown">
       <template #title>Settings</template>
-      <PlDropdownRef :options="app.model.outputs.countsOptions" :model-value="app.model.ui.anchorColumn"
-        @update:model-value="setAnchorColumn" label="Select dataset" clearable />
+      <PlDropdownRef
+        :options="app.model.outputs.countsOptions"
+        :model-value="app.model.ui.anchorColumn"
+        @update:model-value="setAnchorColumn"
+        label="Select dataset"
+        clearable
+      />
     </PlSlideModal>
 
-    <PlAgDataTable v-if="app.model.ui" :settings="tableSettings" v-model="app.model.ui.tableState" show-columns-panel
-      show-export-button />
+    <PlAgDataTable
+      v-if="app.model.ui"
+      :settings="tableSettings"
+      v-model="app.model.ui.tableState"
+      show-columns-panel
+      show-export-button
+    />
   </PlBlockPage>
 </template>
