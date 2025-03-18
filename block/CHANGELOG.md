@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.gene-browser
 
+## 1.3.2
+
+### Patch Changes
+
+- 0ce04e0: Updated tags and ranking
+
 ## 1.3.1
 
 ### Patch Changes
