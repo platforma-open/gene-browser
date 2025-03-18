@@ -33,14 +33,15 @@
       "longDescription": "file:../docs/description.md",
       "changelog": "file:./CHANGELOG.md",
       "tags": [
-        "rna-seq",
-        "view"
+        "RNA-seq",
+        "visualization"
       ],
       "organization": {
         "name": "MiLaboratories Inc",
         "url": "https://milaboratories.com/",
         "logo": "file:../logos/organization-logo.png"
-      }
+      },
+      "marketplaceRanking": 13700
     }
   },
   "devDependencies": {
