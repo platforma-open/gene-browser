@@ -74,7 +74,7 @@ export const model = BlockModel.create()
     ),
   )
 
-  .output('anchorSpec', (ctx) => {
+  .output('anchorSpec', (ctx): PColumnSpec | undefined => {
     // return the Reference of the p-column selected as input dataset in Settings
     if (!ctx.uiState?.anchorColumn) return undefined;
 
@@ -173,7 +173,7 @@ export const model = BlockModel.create()
   })
 
   // Get gene symbol spec
-  .output('geneSymbolSpec', (ctx) => {
+  .output('geneSymbolSpec', (ctx): PColumnSpec | undefined => {
     // return the Reference of the p-column selected as input dataset in Settings
     if (!ctx.uiState?.anchorColumn) return undefined;
 
@@ -191,7 +191,7 @@ export const model = BlockModel.create()
       .filter(isPColumn)
       .filter((col) => {
         if (
-          col.spec.name === 'geneSymbols'
+          (col.spec.name === 'pl7.app/rna-seq/geneSymbols' || col.spec.name === 'geneSymbols')
           // Gene ID axis has to be same as in input data
           && matchGeneIdAxis(anchorGeneAxis, getGeneIdAxis(col.spec))
         ) {
@@ -202,8 +202,8 @@ export const model = BlockModel.create()
     return symbolColumns[0].spec;
   })
 
-// Get DEG pframe
-  .output('DEGpf', (ctx) => {
+  // return a DEG pcolumn spec if any
+  .output('DEGPcolSpec', (ctx): PColumnSpec | undefined => {
     const DEGcolumns = ctx.resultPool
       .getData()
       .entries.map((o) => o.obj)
@@ -216,7 +216,9 @@ export const model = BlockModel.create()
         }
       });
 
-    return DEGcolumns;
+    if (DEGcolumns.length !== 0) {
+      return DEGcolumns[0]?.spec;
+    }
   })
 
   .sections([

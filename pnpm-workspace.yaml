@@ -13,7 +13,7 @@ catalog:
   '@platforma-sdk/workflow-tengo': ^2.13.1
 
   '@platforma-sdk/test': ^1.22.60
-  '@milaboratories/graph-maker': ^1.1.48
+  '@milaboratories/graph-maker': ^1.1.56
   '@milaboratories/software-pframes-conv': ^2.1.5
   '@platforma-open/milaboratories.software-small-binaries': ^1.15.6
   '@platforma-open/milaboratories.software-subread': ^1.0.0
