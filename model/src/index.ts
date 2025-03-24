@@ -164,6 +164,7 @@ export const model = BlockModel.create()
         .getData()
         .entries.map((c) => c.obj)
         .filter(isPColumn)
+        .filter((col) => col.spec.name !== 'pl7.app/rna-seq/DEG' )
     );
   })
 
@@ -185,10 +186,7 @@ export const model = BlockModel.create()
       .entries.map((o) => o.obj)
       .filter(isPColumn)
       .filter((col) => {
-
-        
         if (
-          // col.spec.name === 'geneSymbols' &&
           // We temporarilly add backwards compatibility (spec.name === 'countMatrix')
           // @TODO: remove it when versions are stable
           (col.spec.name === 'pl7.app/rna-seq/geneSymbols' || col.spec.name === 'geneSymbols') &&
@@ -206,32 +204,11 @@ export const model = BlockModel.create()
 
     // Get DEG pframe
   .output('DEGpf', (ctx) => {
-    // return the Reference of the p-column selected as input dataset in Settings
-    if (!ctx.uiState?.anchorColumn) return undefined;
-
-    // Get the specs of that selected p-column
-    const anchorColumn = ctx.resultPool.getPColumnByRef(ctx.uiState?.anchorColumn);
-    if (!anchorColumn) {
-      console.error('Anchor column is undefined or is not PColumn');
-      return undefined;
-    }
-
-    const anchorGeneAxis = getGeneIdAxis(anchorColumn.spec);
     const DEGcolumns = ctx.resultPool
       .getData()
       .entries.map((o) => o.obj)
       .filter(isPColumn)
-      .filter((col) => {
-
-        
-        if (
-          col.spec.name === 'pl7.app/rna-seq/DEG' 
-        ) {
-          return true;
-        }
-
-        return false;
-      });
+      .filter((col) => col.spec.name === 'pl7.app/rna-seq/regulationDirection');
 
     return DEGcolumns
     })
