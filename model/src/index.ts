@@ -208,7 +208,7 @@ export const model = BlockModel.create()
       .getData()
       .entries.map((o) => o.obj)
       .filter(isPColumn)
-      .filter((col) => col.spec.name === 'pl7.app/rna-seq/regulationDirection');
+      .filter((col) => col.spec.name === 'pl7.app/rna-seq/DEG');
 
     return DEGcolumns
     })
