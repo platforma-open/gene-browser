@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.gene-browser.model
 
+## 1.5.0
+
+### Minor Changes
+
+- 8048b20: ui-vue update
+
 ## 1.4.1
 
 ### Patch Changes

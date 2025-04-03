@@ -1,5 +1,13 @@
 # @platforma-open/milaboratories.gene-browser
 
+## 1.3.3
+
+### Patch Changes
+
+- Updated dependencies [8048b20]
+  - @platforma-open/milaboratories.gene-browser.model@1.5.0
+  - @platforma-open/milaboratories.gene-browser.ui@1.4.2
+
 ## 1.3.2
 
 ### Patch Changes
