@@ -40,6 +40,12 @@ const defaultOptions = computed((): PredefinedGraphOption<'heatmap'>[] | undefin
       inputName: "filters",
       selectedSource: app.model.outputs.DEGpf[0].spec
     })
+    // Add contrast as tab by
+    defaults.push({
+      // DEG gene list (if present) as filter
+      inputName: "tabBy",
+      selectedSource: app.model.outputs.DEGpf[0].spec.axesSpec[0]
+    })
   }
 
   return defaults;
