@@ -1,16 +1,18 @@
-<script setup lang="ts">
+<script
+  setup
+  lang="ts"
+>
 import { PlRef } from '@platforma-sdk/model';
 import {
-  PlAgDataTable,
-  PlAgDataTableToolsPanel,
+  PlAgDataTableV2,
   PlBlockPage,
   PlBtnGhost,
-  PlDataTableSettings,
   PlDropdownRef,
   PlMaskIcon24,
-  PlSlideModal
+  PlSlideModal,
+  usePlDataTableSettingsV2
 } from '@platforma-sdk/ui-vue';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useApp } from '../app';
 
 const app = useApp();
@@ -19,12 +21,9 @@ function setAnchorColumn(ref: PlRef | undefined) {
   app.model.ui.anchorColumn = ref;
 }
 
-const tableSettings = computed<PlDataTableSettings>(() => ({
-  sourceType: "ptable",
-
-  pTable: app.model.outputs.pt,
-
-} satisfies PlDataTableSettings));
+const tableSettings = usePlDataTableSettingsV2({
+  model: () => app.model.outputs.pt
+});
 
 const settingsAreShown = ref(app.model.outputs.pt === undefined)
 const showSettings = () => { settingsAreShown.value = true }
@@ -34,7 +33,6 @@ const showSettings = () => { settingsAreShown.value = true }
   <PlBlockPage>
     <template #title>Gene Browser</template>
     <template #append>
-      <PlAgDataTableToolsPanel />
       <PlBtnGhost @click.stop="showSettings">
         Settings
         <template #append>
@@ -49,7 +47,7 @@ const showSettings = () => { settingsAreShown.value = true }
         @update:model-value="setAnchorColumn" label="Select dataset" clearable />
     </PlSlideModal>
 
-    <PlAgDataTable v-if="app.model.ui" :settings="tableSettings" v-model="app.model.ui.tableState" show-columns-panel
+    <PlAgDataTableV2 v-if="app.model.ui" :settings="tableSettings" v-model="app.model.ui.tableState" show-columns-panel
       show-export-button />
   </PlBlockPage>
 </template>

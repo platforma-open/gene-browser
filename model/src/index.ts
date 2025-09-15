@@ -3,18 +3,18 @@ import {
   AxisSpec,
   BlockModel,
   createPFrameForGraphs,
-  createPlDataTable,
+  createPlDataTableV2,
   InferOutputsType,
   isPColumn,
   isPColumnSpec,
   PColumnSpec,
   PFrameHandle,
-  PlDataTableState,
+  PlDataTableStateV2,
   PlRef
 } from '@platforma-sdk/model';
 
 export type UiState = {
-  tableState: PlDataTableState;
+  tableState: PlDataTableStateV2;
   graphState: GraphMakerState;
   anchorColumn?: PlRef;
   heatmapState: GraphMakerState;
@@ -142,7 +142,7 @@ export const model = BlockModel.create()
 
     if (!columns) return undefined;
 
-    return createPlDataTable(ctx, columns, ctx.uiState?.tableState);
+    return createPlDataTableV2(ctx, columns, ctx.uiState?.tableState);
   })
 
   // Boxplot Pf without DEG
@@ -219,6 +219,6 @@ export const model = BlockModel.create()
     { type: "link", href: "/heatmap", label: "Expression Heatmap" },
   ])
 
-  .done();
+  .done(2);
 
 export type BlockOutputs = InferOutputsType<typeof model>;
