@@ -159,13 +159,7 @@ export const model = BlockModel.create()
 
   // Heatmap Pf with DEG
   .output('heatmapPf', (ctx): PFrameHandle | undefined => {
-    return createPFrameForGraphs(ctx,
-      ctx.resultPool
-        .getData()
-        .entries.map((c) => c.obj)
-        .filter(isPColumn)
-        .filter((col) => col.spec.name !== 'pl7.app/rna-seq/DEG' )
-    );
+    return createPFrameForGraphs(ctx);
   })
 
   // Get gene symbol spec
