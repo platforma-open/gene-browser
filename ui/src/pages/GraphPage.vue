@@ -1,12 +1,15 @@
-<script setup lang="ts">
-import { GraphMaker, GraphMakerProps } from "@milaboratories/graph-maker";
+<script
+  setup
+  lang="ts"
+>
+import { GraphMaker, PredefinedGraphOption } from "@milaboratories/graph-maker";
 import '@milaboratories/graph-maker/styles';
 import { computed } from "vue";
 import { useApp } from "../app";
 
 const app = useApp();
 
-const defaultOptions = computed((): GraphMakerProps['defaultOptions'] => {
+const defaultOptions = computed((): PredefinedGraphOption<'discrete'>[] | undefined => {
   if (!app.model.outputs.anchorSpec)
     return undefined;
   if (!app.model.outputs.geneSymbolSpec)
@@ -22,7 +25,7 @@ const defaultOptions = computed((): GraphMakerProps['defaultOptions'] => {
       // Gene Symbol in Filter section
       inputName: 'filters',
       selectedSource: app.model.outputs.geneSymbolSpec
-  }
+    }
   ]
 })
 </script>
