@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.gene-browser.model
 
+## 1.5.1
+
+### Patch Changes
+
+- 23f9e4c: Full SDK update
+
 ## 1.5.0
 
 ### Minor Changes

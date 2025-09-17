@@ -1,5 +1,13 @@
 # @platforma-open/milaboratories.gene-browser.ui
 
+## 1.4.3
+
+### Patch Changes
+
+- 23f9e4c: Full SDK update
+- Updated dependencies [23f9e4c]
+  - @platforma-open/milaboratories.gene-browser.model@1.5.1
+
 ## 1.4.2
 
 ### Patch Changes
