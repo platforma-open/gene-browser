@@ -54,11 +54,13 @@ export const model = BlockModel.create()
     },
     heatmapState: {
       title: "Expression Heatmap",
-      template: "heatmap",
+      template: "heatmapClustered",
       layersSettings: {
-        heatmap: {
+        heatmapClustered: {
           normalizationDirection: "column",
-          normalizationMethod: "standardScaling"
+          normalizationMethod: "standardScaling",
+          dendrogramX: false,
+          dendrogramY: false,
         }
       }
     }
