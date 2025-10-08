@@ -1,5 +1,16 @@
 # @platforma-open/milaboratories.gene-browser.ui
 
+## 1.5.0
+
+### Minor Changes
+
+- 8e01284: refactor and change plot defaults
+
+### Patch Changes
+
+- Updated dependencies [8e01284]
+  - @platforma-open/milaboratories.gene-browser.model@1.6.0
+
 ## 1.4.3
 
 ### Patch Changes
