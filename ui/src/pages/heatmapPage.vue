@@ -51,9 +51,10 @@ const defaultOptions = computed((): PredefinedGraphOption<'heatmap'>[] | undefin
   return defaults;
 })
 
+const key = computed(() => defaultOptions.value ? JSON.stringify(defaultOptions.value) : '');
 </script>
 
 <template>
   <GraphMaker chartType="heatmap" :p-frame="app.model.outputs.heatmapPf" v-model="app.model.ui.heatmapState"
-    :defaultOptions="defaultOptions" />
+    :defaultOptions="defaultOptions" :key="key" />
 </template>
