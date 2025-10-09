@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.gene-browser.model
 
+## 1.6.1
+
+### Patch Changes
+
+- dcc8481: Fix heatmap defaults
+
 ## 1.6.0
 
 ### Minor Changes
