@@ -1,5 +1,13 @@
 # @platforma-open/milaboratories.gene-browser.model
 
+## 1.6.2
+
+### Patch Changes
+
+- d3b843c: technical release
+- de978aa: technical release
+- c5d30c0: technical release
+
 ## 1.6.1
 
 ### Patch Changes

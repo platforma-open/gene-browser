@@ -1,5 +1,19 @@
 # @platforma-open/milaboratories.gene-browser
 
+## 1.3.7
+
+### Patch Changes
+
+- d3b843c: technical release
+- de978aa: technical release
+- c5d30c0: technical release
+- Updated dependencies [d3b843c]
+- Updated dependencies [de978aa]
+- Updated dependencies [c5d30c0]
+  - @platforma-open/milaboratories.gene-browser.model@1.6.2
+  - @platforma-open/milaboratories.gene-browser.ui@1.5.2
+  - @platforma-open/milaboratories.gene-browser.workflow@1.2.1
+
 ## 1.3.6
 
 ### Patch Changes
