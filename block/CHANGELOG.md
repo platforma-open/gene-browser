@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.gene-browser
 
+## 1.3.8
+
+### Patch Changes
+
+- b9c9f31: Update SDK
+
 ## 1.3.7
 
 ### Patch Changes
