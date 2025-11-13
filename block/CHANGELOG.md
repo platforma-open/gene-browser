@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.gene-browser
 
+## 1.3.9
+
+### Patch Changes
+
+- 078579a: Block metadata updated
+
 ## 1.3.8
 
 ### Patch Changes
