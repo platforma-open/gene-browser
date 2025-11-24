@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.gene-browser.workflow
 
+## 1.3.0
+
+### Minor Changes
+
+- 3a91509: Up workflow-tengo version
+
 ## 1.2.1
 
 ### Patch Changes
