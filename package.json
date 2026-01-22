@@ -13,7 +13,8 @@
   "devDependencies": {
     "@changesets/cli": "catalog:",
     "@platforma-sdk/blocks-deps-updater": "catalog:",
-    "turbo": "catalog:"
+    "turbo": "catalog:",
+    "shx": "catalog:"
   },
   "packageManager": "pnpm@9.12.0",
   "//": {
