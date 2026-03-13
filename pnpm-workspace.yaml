@@ -15,7 +15,7 @@ catalog:
   '@platforma-sdk/test': ^1.45.30
   '@milaboratories/graph-maker': ^1.1.179
   '@milaboratories/software-pframes-conv': ^2.2.9
-  '@platforma-open/milaboratories.software-small-binaries': ^1.15.23
+  '@platforma-open/milaboratories.software-small-binaries': 2.0.2
   '@platforma-sdk/blocks-deps-updater': ^2.0.0
 
   'vue': ^3.5.13
